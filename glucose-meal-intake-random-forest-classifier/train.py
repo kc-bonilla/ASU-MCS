@@ -88,7 +88,7 @@ def feat_extraction(meal_dfs, no_meal_dfs):
     desc_stats = ['mean', '50%', 'max', 'min', 'std']
     datasets = [no_meal_dfs, meal_dfs]
     
-    while (set_switch < 2):
+    while set_switch < 2:
         for set in datasets:
             for y in range(len(set)):
                 X = set[y]
@@ -196,10 +196,10 @@ def extract_data(file, file2, file_switch):
 
         meal_diff = (next_meal_tm - curr_meal_tm)
 
-        if (meal_diff > (td * td_thresh)):
+        if meal_diff > (td * td_thresh):
             good_tms.append(curr_meal_tm)
 
-        if ((next_meal_tm == meal_times[-1]) & ((last_time - next_meal_tm) > (td * td_thresh))):
+        if (next_meal_tm == meal_times[-1]) & ((last_time - next_meal_tm) > (td * td_thresh)):
             good_tms.append(next_meal_tm)
 
     good_tms.sort()
@@ -214,7 +214,7 @@ def extract_data(file, file2, file_switch):
 
         ins_meal_tm = good_tms[k]
 
-        if (((ins_meal_tm) - timedelta(minutes = 30)) < first_cgm_tm):
+        if (ins_meal_tm - timedelta(minutes = 30)) < first_cgm_tm:
             good_tms.pop(k)
             k = 0
 
@@ -246,12 +246,12 @@ def extract_data(file, file2, file_switch):
         no_meal_start = meal_end
         no_meal_end = meal_end + timedelta(hours=2)
 
-        if (n == len(meal_tms_dict)-1):
+        if n == len(meal_tms_dict)-1:
             next_meal = last_pt
         else:
             next_meal = meal_tms_dict[n+1]['meal'] 
 
-        while (no_meal_end < next_meal):
+        while no_meal_end < next_meal:
             no_meal_dfs.append(df[(df['Datetime'] > no_meal_start) & (df['Datetime'] <= no_meal_end)])
 
             no_meal_start = no_meal_end
@@ -277,7 +277,7 @@ def extract_data(file, file2, file_switch):
             p += 1
 
 
-    while (q < len(no_meal_dfs)):
+    while q < len(no_meal_dfs):
         if (no_meal_dfs[q]['Sensor Glucose (mg/dL)'].notnull().sum() < 20):
             no_meal_dfs.pop(q)
         elif (no_meal_dfs[q]['ISIG Value'].notnull().sum() < 20):
@@ -288,7 +288,7 @@ def extract_data(file, file2, file_switch):
             no_meal_dfs[p]['ISIG Value'].fillna(no_meal_dfs[p]['ISIG Value'].mean(), inplace=True)
             q += 1
 
-    if (file_switch == 1):
+    if file_switch == 1:
         feat_extraction(meal_dfs, no_meal_dfs)
 
 ################################################################################################################################
